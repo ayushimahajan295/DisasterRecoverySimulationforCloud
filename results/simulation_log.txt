@@ -38,6 +38,8 @@ Entities started.
 0.1: Broker_0: Sending cloudlet 17 to VM #5
 0.1: Broker_0: Sending cloudlet 18 to VM #0
 0.1: Broker_0: Sending cloudlet 19 to VM #1
+DISASTER! Primary datacenter failure at time: 10.0
+Rerouted 0 cloudlets to backup datacenter.
 15.099499999999999: Broker_0: Cloudlet 2 received
 15.099499999999999: Broker_0: Cloudlet 8 received
 15.099499999999999: Broker_0: Cloudlet 14 received
@@ -52,8 +54,6 @@ Entities started.
 20.0995: Broker_0: Cloudlet 7 received
 20.0995: Broker_0: Cloudlet 13 received
 20.0995: Broker_0: Cloudlet 19 received
-DISASTER! Primary datacenter failure at time: 40.0
-Rerouted 0 cloudlets to backup datacenter.
 60.0955: Broker_0: Cloudlet 4 received
 60.0955: Broker_0: Cloudlet 10 received
 60.0955: Broker_0: Cloudlet 16 received
@@ -82,7 +82,7 @@ Number of Cloudlets: 20
 avgWaitTime: 0
 avgExecutionTime: 30.5
 ===== FAILOVER INFORMATION =====
-    Failure occurred at time: 40
+    Failure occurred at time: 10
 ===== CLOUDLET DETAILS =====
 	ID	STATUS	DC	VM	Time	Start Time	Finish Time
 	2	Success	3	2	15	0.1	15.1
