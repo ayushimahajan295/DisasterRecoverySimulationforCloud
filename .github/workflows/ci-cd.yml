@@ -62,6 +62,19 @@ jobs:
       run: |
         python scripts/generate_html_report.py
     
+    - name: Copy index.html to reports directory
+      run: |
+        cp index.html reports/
+        cp -r results reports/
+        cp -r scripts reports/
+        # Copy any other necessary files for the report to function
+        if [ -f pox.xml ]; then
+          cp pox.xml reports/
+        fi
+        if [ -d lib ]; then
+          cp -r lib reports/
+        fi
+    
     - name: Upload Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
