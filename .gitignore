@@ -1,0 +1,5 @@
+# Build files
+*.class
+
+# Log files
+*.log

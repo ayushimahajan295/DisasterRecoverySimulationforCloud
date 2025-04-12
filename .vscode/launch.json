@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "Run Disaster Recovery Simulation",
+        "request": "launch",
+        "mainClass": "org.cloudsim.disaster.DisasterRecoverySimulation",
+        "classpath": [
+          "${workspaceFolder}/bin",
+          "${workspaceFolder}/lib/*.jar"
+        ]
+      }
+    ]
+  }

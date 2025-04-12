@@ -1,0 +1,70 @@
+name: CI/CD Pipeline for Disaster Recovery Simulation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Create output directories
+      run: |
+        mkdir -p bin results reports
+        mkdir -p reports/results
+
+    - name: Compile Java Simulation
+      run: |
+        javac -cp "lib/cloudsim-3.0.3.jar:lib/commons-math3-3.6.1.jar:lib/commons-csv-1.9.0.jar" \
+              -d bin src/org/cloudsim/disaster/*.java
+
+    - name: Run Java Simulation
+      run: |
+        java -cp "bin:lib/cloudsim-3.0.3.jar:lib/commons-math3-3.6.1.jar:lib/commons-csv-1.9.0.jar" \
+             org.cloudsim.disaster.DisasterRecoverySimulation > results/simulation_log.txt
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install matplotlib pandas markdown
+
+    - name: Generate Metrics CSV
+      run: python scripts/generate_metrics.py
+      working-directory: ${{ github.workspace }}
+
+    - name: Check Metrics Output
+      run: |
+        if [ ! -f reports/results/metrics.csv ]; then
+          echo "Error: metrics.csv not found in reports/results. Simulation or metrics generation may have failed."
+          exit 1
+        fi
+
+    - name: Generate HTML Report
+      run: python scripts/generate_html_report.py
+      working-directory: ${{ github.workspace }}
+
+    - name: Upload Report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./reports
+        publish_branch: gh-pages
